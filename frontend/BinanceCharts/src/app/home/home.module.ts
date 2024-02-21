@@ -1,12 +1,12 @@
 import { NgModule } from "@angular/core";
 import { HomeComponent } from "./components";
 import { HomeRoutingModule } from "./home-routing.module";
-import { ChartModule } from 'primeng/chart';
+import { SharedModule } from "../shared/shared.module";
 
 @NgModule({
     declarations: [
         HomeComponent
     ],
-    imports: [HomeRoutingModule, ChartModule]
+    imports: [HomeRoutingModule, SharedModule]
 })
 export class HomeModule { }
