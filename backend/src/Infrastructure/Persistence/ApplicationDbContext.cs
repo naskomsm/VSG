@@ -1,4 +1,4 @@
-namespace Infrastrucure.Persistence
+namespace Infrastructure.Persistence
 {
     using MediatR;
     using Application.Common.Inferfaces;

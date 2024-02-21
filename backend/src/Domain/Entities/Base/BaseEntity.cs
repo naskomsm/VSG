@@ -4,12 +4,7 @@ namespace Domain.Entities.Base
 
     public abstract class BaseEntity
     {
-        public BaseEntity()
-        {
-            this.Id = Guid.NewGuid();
-        }
-
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         private readonly List<BaseEvent> _domainEvents = [];
 

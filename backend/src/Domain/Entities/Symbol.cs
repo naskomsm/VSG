@@ -7,6 +7,11 @@ namespace Domain.Entities
     {
         private string name = null!;
 
+        public Symbol(string name)
+        {
+            this.Name = name;
+        }
+
         public string Name
         {
             get => this.name;
