@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -7,7 +8,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
   data: any;
+  options: any;
 
+  symbolFormGroup!: FormGroup;
+  intervalFormGroup!: FormGroup;
+
+  symbolOptions: any[] = [
+    { label: 'BTCUSDT', value: 'BTCUSDT' },
+    { label: 'ETCUSDT', value: 'ETCUSDT' },
+    { label: 'XRPUSDT', value: 'XRPUSDT' }
+  ];
+
+  intervalOptions: any[] = [
+    { label: '15m', value: '15m' },
+    { label: '1h', value: '1h' },
+    { label: '4h', value: '4h' }
+  ];
   hardcoded_klines = [
     [1708502400000, "51568.64000000"],
     [1708503300000, "51618.61000000"],
@@ -36,8 +52,48 @@ export class HomeComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    const documentStyle = getComputedStyle(document.documentElement);
+    this.symbolFormGroup = new FormGroup({
+      value: new FormControl('BTCUSDT')
+    });
 
+    this.intervalFormGroup = new FormGroup({
+      value: new FormControl('15m')
+    });
+
+    const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue('--text-color');
+    const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
+    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+
+    this.options = {
+      maintainAspectRatio: false,
+      aspectRatio: 0.6,
+      plugins: {
+        legend: {
+          labels: {
+            color: textColor
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: textColorSecondary
+          },
+          grid: {
+            color: surfaceBorder
+          }
+        },
+        y: {
+          ticks: {
+            color: textColorSecondary
+          },
+          grid: {
+            color: surfaceBorder
+          }
+        }
+      }
+    };
     this.data = {
       labels: this.hardcoded_klines.map(x => {
         const date = new Date(x[0]);

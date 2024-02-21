@@ -1,12 +1,23 @@
 import { NgModule } from "@angular/core";
 import { HomeComponent } from "./components";
 import { HomeRoutingModule } from "./home-routing.module";
-import { SharedModule } from "../shared/shared.module";
+import { ChartModule } from 'primeng/chart';
+import { CardModule } from 'primeng/card';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
     declarations: [
         HomeComponent
     ],
-    imports: [HomeRoutingModule, SharedModule]
+    imports: [
+        HomeRoutingModule,
+        ChartModule,
+        CardModule,
+        SelectButtonModule,
+        ReactiveFormsModule,
+        ButtonModule
+    ]
 })
 export class HomeModule { }
