@@ -11,18 +11,28 @@ export class ChartComponent implements OnInit {
     @Input() data: any;
     options: any;
 
-    formGroup!: FormGroup;
+    symbolFormGroup!: FormGroup;
+    intervalFormGroup!: FormGroup;
 
-    stateOptions: any[] = [
+    symbolOptions: any[] = [
         { label: 'BTCUSDT', value: 'BTCUSDT' },
         { label: 'ETCUSDT', value: 'ETCUSDT' },
         { label: 'XRPUSDT', value: 'XRPUSDT' }
     ];
 
+    intervalOptions: any[] = [
+        { label: '15m', value: '15m' },
+        { label: '1h', value: '1h' },
+        { label: '4h', value: '4h' }
+    ];
 
     ngOnInit() {
-        this.formGroup = new FormGroup({
+        this.symbolFormGroup = new FormGroup({
             value: new FormControl('BTCUSDT')
+        });
+
+        this.intervalFormGroup = new FormGroup({
+            value: new FormControl('15m')
         });
 
         const documentStyle = getComputedStyle(document.documentElement);

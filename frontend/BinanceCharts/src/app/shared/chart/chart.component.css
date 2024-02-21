@@ -1,12 +1,9 @@
 .chart-shell {
-    border: 5px solid;
-    width: 50%;
-    margin: auto;
+    margin: 2rem;
     text-align: center
 }
 
-@media screen and (max-width: 1000px) {
-    .chart-shell {
-        width: 100%;
-    }
+.options {
+    justify-content: space-between;
+    display: flex;
 }
