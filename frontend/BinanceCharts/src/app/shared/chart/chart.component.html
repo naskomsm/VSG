@@ -1,3 +1,16 @@
-<div class="card" [style]="{ width: '50%' , margin: 'auto'}">
-    <p-chart type="line" [data]="data" [options]="options"></p-chart>
+<div class="chart-shell">
+    <div [style]="{'text-align': 'start', margin: '0rem 5rem 1rem 5rem'}">
+        <p>Welcome, USER</p>
+
+        <div class="card flex justify-content-center">
+            <form [formGroup]="formGroup">
+                <p-selectButton [options]="stateOptions" formControlName="value" optionLabel="label"
+                    optionValue="value"></p-selectButton>
+            </form>
+        </div>
+    </div>
+
+    <p-card>
+        <p-chart type="line" [data]="data" [options]="options"></p-chart>
+    </p-card>
 </div>

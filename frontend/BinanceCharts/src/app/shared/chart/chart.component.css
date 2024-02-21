@@ -1,0 +1,12 @@
+.chart-shell {
+    border: 5px solid;
+    width: 50%;
+    margin: auto;
+    text-align: center
+}
+
+@media screen and (max-width: 1000px) {
+    .chart-shell {
+        width: 100%;
+    }
+}
