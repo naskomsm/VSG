@@ -5,9 +5,9 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Diagnostics;
 
-    public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
+    public class AuditableEntityInterceptor : SaveChangesInterceptor
     {
-        public AuditableEntitySaveChangesInterceptor()
+        public AuditableEntityInterceptor()
         {
         }
 

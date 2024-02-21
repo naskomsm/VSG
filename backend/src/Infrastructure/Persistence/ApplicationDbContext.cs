@@ -10,9 +10,8 @@ namespace Infrastructure.Persistence
 
     public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
-
         private readonly IMediator? mediator;
-        private readonly AuditableEntitySaveChangesInterceptor? auditableEntitySaveChangesInterceptor;
+        private readonly AuditableEntityInterceptor? auditableEntitySaveChangesInterceptor;
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options) { }
@@ -20,7 +19,7 @@ namespace Infrastructure.Persistence
         public ApplicationDbContext(
             DbContextOptions<ApplicationDbContext> options,
             IMediator mediator,
-            AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)
+            AuditableEntityInterceptor auditableEntitySaveChangesInterceptor)
             : base(options)
         {
             this.mediator = mediator;
