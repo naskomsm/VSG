@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { auditTime, combineLatest, defaultIfEmpty, exhaustAll, exhaustMap, filter, first, forkJoin, map, of, switchMap, take, takeLast, zip } from 'rxjs';
 import { IAppState } from 'src/app/store';
@@ -32,9 +33,14 @@ export class HomeComponent implements OnInit {
     { label: '4h', value: '4h' }
   ];
 
-  constructor(private _store: Store<IAppState>) {
+  constructor(private _store: Store<IAppState>, private route: ActivatedRoute) {
     this._store.dispatch(new GetSymbols());
+    this.route.queryParams.subscribe(params => {
+      const symbolId = params['symbolId'];
+      const interval = params['interval'];
 
+      // Get data
+    });
   }
 
   changeSymbol(value: number) {
@@ -50,7 +56,6 @@ export class HomeComponent implements OnInit {
   viewAll() { }
 
   ngOnInit() {
-
     this.symbols.pipe(
       auditTime(100)
     ).subscribe(paginatedResult => {

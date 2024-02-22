@@ -16,6 +16,7 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { SymbolEffects } from './store/effects/symbol.effects';
 import { httpInterceptorProviders } from './interceptors';
+import { ViewEffects } from './store/effects/view.effecs';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,7 @@ import { httpInterceptorProviders } from './interceptors';
     HttpClientModule,
     BrowserAnimationsModule,
     StoreModule.forRoot(appReducers, { metaReducers }),
-    EffectsModule.forRoot([HydrationEffects, AuthenticationEffects, SymbolEffects, BinanceEffects]),
+    EffectsModule.forRoot([HydrationEffects, AuthenticationEffects, SymbolEffects, BinanceEffects, ViewEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production, // Restrict extension to log-only mode

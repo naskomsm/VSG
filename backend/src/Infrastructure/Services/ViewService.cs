@@ -47,6 +47,7 @@ namespace Infrastructure.Services
             {
                 Id = x.Id,
                 Symbol = x.Symbol!.Name,
+                SymbolId = x.Symbol!.Id,
                 Interval = x.Interval
             }).ToList();
         }

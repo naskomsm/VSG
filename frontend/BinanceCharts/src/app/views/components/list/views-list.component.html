@@ -1,5 +1,5 @@
-<div class="card">
-    <p-table [value]="views" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+<div class="card" [style]="{'margin': '2rem'}">
+    <p-table [value]="(this.views$ | async)?.items!" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
         [tableStyle]="{ 'min-width': '50rem' }"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
         [rowsPerPageOptions]="[5, 10, 20]">
@@ -15,9 +15,10 @@
         <ng-template pTemplate="body" let-view>
             <tr>
                 <td>{{ view.symbol }}</td>
-                <td>{{ view.period }}</td>
+                <td>{{ view.interval }}</td>
                 <td>
-                    <p-button [routerLink]="[view.id]" label="View"></p-button>
+                    <p-button [routerLink]="['/']"
+                        [queryParams]="{'symbolId': view.symbolId, 'interval': view.interval}" label="View"></p-button>
                     <p-button label="Delete" severity="danger"></p-button>
                 </td>
             </tr>

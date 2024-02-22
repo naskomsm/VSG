@@ -6,6 +6,8 @@ namespace Application.View
 
         public string Symbol { get; set; } = null!;
 
+        public int SymbolId { get; set; }
+
         public string Interval { get; set; } = null!;
     }
 }

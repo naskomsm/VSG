@@ -1,5 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
+import { Store } from "@ngrx/store";
 import { IView } from "src/app/models/view";
+import { IAppState } from "src/app/store";
+import { GetViews } from "src/app/store/actions/view.actions";
+import { paginatedViews } from "src/app/store/selectors/views.selectors";
 
 @Component({
     selector: 'app-views-list',
@@ -7,15 +11,9 @@ import { IView } from "src/app/models/view";
     styleUrls: ['./views-list.component.css']
 })
 export class ViewsListComponent {
-    views: IView[] = [
-        { id: 1, symbol: "BTCUSDT", period: "30m" },
-        { id: 2, symbol: "XRPUSDT", period: "1h" },
-        { id: 3, symbol: "XRPUSDT", period: "1h" },
-        { id: 4, symbol: "BTCUSDT", period: "30m" },
-        { id: 5, symbol: "XRPUSDT", period: "1h" },
-        { id: 6, symbol: "XRPUSDT", period: "1h" },
-        { id: 7, symbol: "BTCUSDT", period: "30m" },
-        { id: 8, symbol: "XRPUSDT", period: "1h" },
-        { id: 9, symbol: "XRPUSDT", period: "1h" },
-    ];
+    views$ = this._store.select(paginatedViews);
+
+    constructor(private _store: Store<IAppState>) {
+        this._store.dispatch(new GetViews());
+    }
 }
