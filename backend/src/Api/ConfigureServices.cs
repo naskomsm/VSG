@@ -10,12 +10,17 @@ namespace Api
         {
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IAuthorizationHandler, AccessAuthorizationHandler>();
+
             services.AddAuthorizationBuilder()
                 .AddPolicy("Access", policy =>
                     policy.Requirements.Add(new Access()));
 
             services.AddHealthChecks();
-            services.AddControllers();
+
+            services.AddControllers(options =>
+            {
+                options.Filters.Add<ApiExceptionFilterAttribute>();
+            });
 
 
             RegisterSwagger(services);

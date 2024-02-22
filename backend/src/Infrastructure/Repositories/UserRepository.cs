@@ -5,6 +5,7 @@ namespace Infrastructure.Repositories
     using System.Threading.Tasks;
     using Application.Common.Inferfaces;
     using Application.Common.Interfaces;
+    using Application.User;
     using Application.User.Interfaces;
     using Domain.Entities;
     using Microsoft.EntityFrameworkCore;
@@ -45,6 +46,11 @@ namespace Infrastructure.Repositories
         public async Task<User?> GetAsync(int id, CancellationToken cancellationToken = default)
         {
             return await this.context.Users.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        }
+
+        public async Task<User?> GetUserByUsernameAsync(string username, CancellationToken cancellationToken)
+        {
+            return await this.context.Users.FirstOrDefaultAsync(x => x.Name == username, cancellationToken);
         }
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
