@@ -2,7 +2,6 @@ namespace Infrastructure.Services
 {
     using System.Threading;
     using System.Threading.Tasks;
-    using Application.Common.Exceptions;
     using Application.User;
     using Application.User.Interfaces;
     using Domain.Entities;

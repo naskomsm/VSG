@@ -5,7 +5,7 @@ namespace Api.Controllers
     using Application.User.Commands;
     using Microsoft.AspNetCore.Mvc;
 
-    public class UserController : ApiControllerBase
+    public class UsersController : ApiControllerBase
     {
         [HttpPost("signin")]
         public async Task<ActionResult<UserDto>> Signin([FromBody] SigninCommand command)

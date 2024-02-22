@@ -1,4 +1,4 @@
-namespace Application.Binance.Queries
+namespace Application.Binance.Symbol
 {
     using System.Threading;
     using System.Threading.Tasks;
@@ -6,6 +6,7 @@ namespace Application.Binance.Queries
     using Application.Common.Models;
     using MediatR;
     using Application.Common.Extensions;
+    using Application.Symbol;
 
     public record GetSymbolsQuery : IRequest<PaginatedList<SymbolDto>>
     {

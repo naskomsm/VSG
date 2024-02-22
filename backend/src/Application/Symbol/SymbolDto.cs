@@ -1,4 +1,4 @@
-namespace Application.Binance
+namespace Application.Symbol
 {
     public record SymbolDto
     {

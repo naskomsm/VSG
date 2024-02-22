@@ -8,23 +8,23 @@ namespace Infrastructure.Repositories
     using Domain.Entities;
     using Microsoft.EntityFrameworkCore;
 
-    public class SymbolRepository(IApplicationDbContext context) : IRepository<Symbol>
+    public class ViewRepository(IApplicationDbContext context) : IRepository<View>
     {
         private readonly IApplicationDbContext context = context;
 
-        public Task AddAsync(Symbol entity, CancellationToken cancellationToken = default)
+        public async Task AddAsync(View entity, CancellationToken cancellationToken = default)
+        {
+            await this.context.Views.AddAsync(entity, cancellationToken);
+        }
+
+        public void BatchDelete(IList<View> entities)
         {
             throw new NotImplementedException();
         }
 
-        public void BatchDelete(IList<Symbol> entities)
+        public void Delete(View entity)
         {
-            throw new NotImplementedException();
-        }
-
-        public void Delete(Symbol entity)
-        {
-            throw new NotImplementedException();
+            this.context.Views.Remove(entity);
         }
 
         public Task<bool> ExistsAsync(int id, CancellationToken cancellationToken = default)
@@ -32,14 +32,16 @@ namespace Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<IList<Symbol>> FetchAllAsync(CancellationToken cancellationToken = default)
+        public async Task<IList<View>> FetchAllAsync(CancellationToken cancellationToken = default)
         {
-            return await this.context.Symbols.ToListAsync(cancellationToken);
+            return await this.context.Views
+                .Include(x => x.Symbol)
+                .ToListAsync(cancellationToken);
         }
 
-        public async Task<Symbol?> GetAsync(int id, CancellationToken cancellationToken = default)
+        public Task<View?> GetAsync(int id, CancellationToken cancellationToken = default)
         {
-            return await this.context.Symbols.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            throw new NotImplementedException();
         }
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -47,7 +49,7 @@ namespace Infrastructure.Repositories
             return await this.context.SaveChangesAsync(cancellationToken);
         }
 
-        public void Update(Symbol entity)
+        public void Update(View entity)
         {
             throw new NotImplementedException();
         }

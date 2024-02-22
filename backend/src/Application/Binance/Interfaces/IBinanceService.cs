@@ -1,6 +1,7 @@
 namespace Application.Binance.Interfaces
 {
     using Application.Binance.Queries;
+    using Application.Symbol;
 
     public interface IBinanceService
     {

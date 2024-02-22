@@ -3,7 +3,11 @@ namespace Api.Controllers
     using Api.Controllers.Base;
     using Application.Binance;
     using Application.Binance.Queries;
+    using Application.Binance.Symbol;
     using Application.Common.Models;
+    using Application.Symbol;
+    using Application.View;
+    using Application.View.Queries;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -26,12 +30,6 @@ namespace Api.Controllers
         public async Task<ActionResult<PaginatedList<SymbolDto>>> GetSymbols([FromQuery] GetSymbolsQuery query)
         {
             return await this.Mediator.Send(query);
-        }
-
-        [HttpPost("views")]
-        public void CreateView()
-        {
-
         }
     }
 }

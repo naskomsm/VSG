@@ -8,6 +8,7 @@ namespace Infrastructure.Services
     using Application.Binance.Interfaces;
     using Application.Binance.Queries;
     using Application.Common.Interfaces;
+    using Application.Symbol;
     using Domain.Entities;
     using Microsoft.Extensions.Configuration;
 

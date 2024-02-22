@@ -4,6 +4,7 @@ namespace Infrastrucure
     using Application.Common.Inferfaces;
     using Application.Common.Interfaces;
     using Application.User.Interfaces;
+    using Application.View.Interfaces;
     using Domain.Entities;
     using Infrastructure.Interceptors;
     using Infrastructure.Persistence;
@@ -42,11 +43,13 @@ namespace Infrastrucure
 
             // Register repositories below..
             services.AddTransient<IRepository<Symbol>, SymbolRepository>();
+            services.AddTransient<IRepository<View>, ViewRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
 
             // Register services below..
             services.AddTransient<IBinanceService, BinanceService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IViewService, ViewService>();
 
             return services;
         }
