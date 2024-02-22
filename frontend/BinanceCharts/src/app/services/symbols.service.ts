@@ -12,7 +12,7 @@ export class SymbolsService {
 
     getSymbols() {
         return this.httpClient.get<Paginated<ISymbol>>(
-            `${environment.api}/api/Binance/symbols`
+            `${environment.api}/api/symbols`
         )
     }
 }

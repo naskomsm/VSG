@@ -7,6 +7,7 @@ namespace Infrastructure.Services
     using Application.Binance;
     using Application.Binance.Interfaces;
     using Application.Binance.Queries;
+    using Application.Common.Exceptions;
     using Application.Common.Interfaces;
     using Application.Symbol;
     using Domain.Entities;
@@ -20,20 +21,24 @@ namespace Infrastructure.Services
 
         public async Task<AveragePriceDto> GetAveragePriceAsync(GetAveragePriceQuery query, CancellationToken cancellationToken)
         {
+            var symbol = await this.symbolRepository.GetAsync(query.SymbolId, cancellationToken) ?? throw new NotFoundException(typeof(Symbol));
+
             string? httpClientName = configuration["BinanceHttpClientName"];
             using HttpClient client = httpClientFactory.CreateClient(httpClientName ?? "");
 
-            AveragePriceDto? averagePrice = await client.GetFromJsonAsync<AveragePriceDto>($"/api/v3/avgPrice?symbol={query.Symbol}", new JsonSerializerOptions(JsonSerializerDefaults.Web), cancellationToken: cancellationToken);
+            AveragePriceDto? averagePrice = await client.GetFromJsonAsync<AveragePriceDto>($"/api/v3/avgPrice?symbol={symbol.Name}", new JsonSerializerOptions(JsonSerializerDefaults.Web), cancellationToken: cancellationToken);
 
             return averagePrice ?? new AveragePriceDto();
         }
 
         public async Task<List<KlineDto>> GetKlinesAsync(GetKlinesQuery query, CancellationToken cancellationToken)
         {
+            var symbol = await this.symbolRepository.GetAsync(query.SymbolId, cancellationToken) ?? throw new NotFoundException(typeof(Symbol));
+
             string? httpClientName = configuration["BinanceHttpClientName"];
             using HttpClient client = httpClientFactory.CreateClient(httpClientName ?? "");
 
-            List<dynamic>? jsonArray = await client.GetFromJsonAsync<List<dynamic>>($"/api/v3/klines?symbol={query.Symbol}&interval={query.Interval}&limit={query.Limit}", new JsonSerializerOptions(JsonSerializerDefaults.Web), cancellationToken: cancellationToken);
+            List<dynamic>? jsonArray = await client.GetFromJsonAsync<List<dynamic>>($"/api/v3/klines?symbol={symbol.Name}&interval={query.Interval}&limit={query.Limit}", new JsonSerializerOptions(JsonSerializerDefaults.Web), cancellationToken: cancellationToken);
 
             var klines = new List<KlineDto>();
 

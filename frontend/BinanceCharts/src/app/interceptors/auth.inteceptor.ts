@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { IAppState } from '../store';
 import { Store } from '@ngrx/store';
 import { getUser } from '../store/selectors';
-import { exhaustMap, first, map, switchMap } from 'rxjs';
+import { exhaustMap, first, map } from 'rxjs';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {

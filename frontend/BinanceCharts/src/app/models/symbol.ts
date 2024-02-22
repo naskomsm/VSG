@@ -1,4 +1,4 @@
 export interface ISymbol {
-    openTime: number;
-    openPrice: number;
+    id: number;
+    name: string;
 }

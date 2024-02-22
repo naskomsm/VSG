@@ -11,7 +11,7 @@ export class AuthenticationService {
 
     signin(username: string) {
         return this.httpClient.post<IUser>(
-            `${environment.api}/api/User/signin`, { username }
+            `${environment.api}/api/users/signin`, { username }
         )
     }
 }

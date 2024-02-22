@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule } from '@ngrx/store';
 import { HydrationEffects } from './store/effects/hydration.effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { AuthenticationEffects } from './store/effects';
+import { AuthenticationEffects, BinanceEffects } from './store/effects';
 import { appReducers, metaReducers } from './store/reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { environment } from 'src/environments/environment';
@@ -29,7 +29,7 @@ import { httpInterceptorProviders } from './interceptors';
     HttpClientModule,
     BrowserAnimationsModule,
     StoreModule.forRoot(appReducers, { metaReducers }),
-    EffectsModule.forRoot([HydrationEffects, AuthenticationEffects, SymbolEffects]),
+    EffectsModule.forRoot([HydrationEffects, AuthenticationEffects, SymbolEffects, BinanceEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production, // Restrict extension to log-only mode

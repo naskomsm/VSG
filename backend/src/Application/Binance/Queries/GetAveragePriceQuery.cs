@@ -9,7 +9,7 @@ namespace Application.Binance.Queries
     public record GetAveragePriceQuery : IRequest<AveragePriceDto>
     {
         [Required]
-        public string Symbol { get; set; } = null!;
+        public int SymbolId { get; set; }
     }
 
     public class GetAveragePriceQueryHandler(IBinanceService binanceService) : IRequestHandler<GetAveragePriceQuery, AveragePriceDto>

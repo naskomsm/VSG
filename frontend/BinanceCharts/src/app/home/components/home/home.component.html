@@ -5,15 +5,15 @@
         <div class="options">
             <div class="card flex justify-content-center">
                 <form [formGroup]="symbolFormGroup">
-                    <p-selectButton [options]="symbolOptions" formControlName="value" optionLabel="label"
-                        optionValue="value"></p-selectButton>
+                    <p-selectButton [options]="symbolOptions" formControlName="symbol"
+                        (onChange)="changeSymbol($event.value)"></p-selectButton>
                 </form>
             </div>
 
             <div class="card flex justify-content-center">
                 <form [formGroup]="intervalFormGroup">
-                    <p-selectButton [options]="intervalOptions" formControlName="value" optionLabel="label"
-                        optionValue="value"></p-selectButton>
+                    <p-selectButton [options]="intervalOptions" formControlName="interval"
+                        (onChange)="changeInterval($event.value)"></p-selectButton>
                 </form>
             </div>
 
