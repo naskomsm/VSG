@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { auditTime, combineLatest, defaultIfEmpty, exhaustAll, exhaustMap, filter, first, forkJoin, map, of, switchMap, take, takeLast, zip } from 'rxjs';
 import { IAppState } from 'src/app/store';
 import { GetAveragePrice, GetKlines, GetSymbols } from 'src/app/store/actions';
+import { getUser } from 'src/app/store/selectors';
 import { getAveragePrice, getKlines } from 'src/app/store/selectors/binance.selectors';
 import { paginatedSymbols } from 'src/app/store/selectors/symbols.selectors';
 
@@ -21,6 +22,7 @@ export class HomeComponent implements OnInit {
   symbolFormGroup: FormGroup = new FormGroup({ symbol: new FormControl() });
   intervalFormGroup: FormGroup = new FormGroup({ interval: new FormControl('15m') });
 
+  user = this._store.select(getUser);
   symbols = this._store.select(paginatedSymbols);
   klins = this._store.select(getKlines);
   avgPrice = this._store.select(getAveragePrice);
@@ -40,6 +42,35 @@ export class HomeComponent implements OnInit {
       const interval = params['interval'];
 
       // Get data
+      this.symbols.pipe(
+        auditTime(100)
+      ).subscribe(paginatedResult => {
+        if (paginatedResult) {
+          this.symbolOptions = paginatedResult.items.map(x => {
+            return { label: x.name, value: x.id }
+          });
+
+          // Set default value of symbol form if none provided
+          if (!symbolId) {
+            const defaultSelectedSymbolId = paginatedResult.items[0].id;
+            this.symbolFormGroup = new FormGroup({
+              symbol: new FormControl(defaultSelectedSymbolId)
+            });
+          } else {
+            console.log(symbolId);
+
+            this.symbolFormGroup = new FormGroup({
+              symbol: new FormControl(symbolId)
+            });
+            this.intervalFormGroup = new FormGroup({
+              interval: new FormControl(interval)
+            });
+          }
+
+          this._store.dispatch(new GetAveragePrice(this.symbolFormGroup.value['symbol']));
+          this._store.dispatch(new GetKlines(this.symbolFormGroup.value['symbol'], this.intervalFormGroup.value['interval']));
+        }
+      })
     });
   }
 
@@ -56,28 +87,6 @@ export class HomeComponent implements OnInit {
   viewAll() { }
 
   ngOnInit() {
-    this.symbols.pipe(
-      auditTime(100)
-    ).subscribe(paginatedResult => {
-      if (paginatedResult) {
-        this.symbolOptions = paginatedResult.items.map(x => {
-          return { label: x.name, value: x.id }
-        });
-
-        if (paginatedResult.totalCount > 0) {
-          const defaultSelectedSymbolId = paginatedResult.items[0].id;
-
-          // Set default value of symbol form
-          this.symbolFormGroup = new FormGroup({
-            symbol: new FormControl(defaultSelectedSymbolId)
-          });
-
-          this._store.dispatch(new GetAveragePrice(defaultSelectedSymbolId));
-          this._store.dispatch(new GetKlines(defaultSelectedSymbolId, this.intervalFormGroup.value['interval']));
-        }
-      }
-    })
-
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
     const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');

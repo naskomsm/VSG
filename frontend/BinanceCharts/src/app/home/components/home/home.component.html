@@ -1,6 +1,6 @@
 <div class="chart-shell">
     <div [style]="{'text-align': 'start', margin: '0rem 5rem 1rem 5rem'}">
-        <p>Welcome, USER</p>
+        <p>Welcome, {{(this.user | async)?.name}}</p>
 
         <div class="options">
             <div class="card flex justify-content-center">
