@@ -1,8 +1,10 @@
 namespace Infrastrucure
 {
+    using Application.Binance.Interfaces;
     using Application.Common.Inferfaces;
     using Infrastructure.Interceptors;
     using Infrastructure.Persistence;
+    using Infrastructure.Services;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -22,7 +24,22 @@ namespace Infrastrucure
             services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
             services.AddScoped<ApplicationDbContextInitialiser>();
 
+            var httpClientName = configuration["BinanceHttpClientName"];
+            var httpClientUrl = configuration["BinanceUrl"];
+            ArgumentException.ThrowIfNullOrEmpty(httpClientName);
+            ArgumentException.ThrowIfNullOrEmpty(httpClientUrl);
+
+            services.AddHttpClient(
+                httpClientName,
+                client =>
+                {
+                    client.BaseAddress = new Uri(httpClientUrl);
+                });
+
+            // Register repositories below..
+
             // Register services below..
+            services.AddTransient<IBinanceService, BinanceService>();
 
             return services;
         }
