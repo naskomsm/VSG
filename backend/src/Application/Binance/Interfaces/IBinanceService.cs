@@ -4,6 +4,8 @@ namespace Application.Binance.Interfaces
 
     public interface IBinanceService
     {
+        Task<List<SymbolDto>> GetSymbolsAsync(CancellationToken cancellationToken);
+
         Task<List<KlineDto>> GetKlinesAsync(GetKlinesQuery query, CancellationToken cancellationToken);
 
         Task<AveragePriceDto> GetAveragePriceAsync(GetAveragePriceQuery query, CancellationToken cancellationToken);

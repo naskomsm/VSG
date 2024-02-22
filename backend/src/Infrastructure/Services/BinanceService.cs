@@ -7,12 +7,15 @@ namespace Infrastructure.Services
     using Application.Binance;
     using Application.Binance.Interfaces;
     using Application.Binance.Queries;
+    using Application.Common.Interfaces;
+    using Domain.Entities;
     using Microsoft.Extensions.Configuration;
 
-    public class BinanceService(IHttpClientFactory httpClientFactory, IConfiguration configuration) : IBinanceService
+    public class BinanceService(IHttpClientFactory httpClientFactory, IConfiguration configuration, IRepository<Symbol> symbolRepository) : IBinanceService
     {
         private readonly IHttpClientFactory httpClientFactory = httpClientFactory;
         private readonly IConfiguration configuration = configuration;
+        private readonly IRepository<Symbol> symbolRepository = symbolRepository;
 
         public async Task<AveragePriceDto> GetAveragePriceAsync(GetAveragePriceQuery query, CancellationToken cancellationToken)
         {
@@ -55,6 +58,16 @@ namespace Infrastructure.Services
             }
 
             return klines;
+        }
+
+        public async Task<List<SymbolDto>> GetSymbolsAsync(CancellationToken cancellationToken)
+        {
+            var symbols = await this.symbolRepository.FetchAllAsync(cancellationToken);
+            return symbols.Select(x => new SymbolDto
+            {
+                Id = x.Id,
+                Name = x.Name
+            }).ToList();
         }
     }
 }

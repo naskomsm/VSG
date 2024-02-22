@@ -4,8 +4,6 @@ namespace Infrastructure.Repositories
     using System.Threading;
     using System.Threading.Tasks;
     using Application.Common.Inferfaces;
-    using Application.Common.Interfaces;
-    using Application.User;
     using Application.User.Interfaces;
     using Domain.Entities;
     using Microsoft.EntityFrameworkCore;
