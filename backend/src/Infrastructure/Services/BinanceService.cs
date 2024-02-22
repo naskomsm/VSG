@@ -14,14 +14,24 @@ namespace Infrastructure.Services
         private readonly IHttpClientFactory httpClientFactory = httpClientFactory;
         private readonly IConfiguration configuration = configuration;
 
-        public async Task<List<GetKlineDto>> GetKlinesAsync(GetKlinesQuery query, CancellationToken cancellationToken)
+        public async Task<AveragePriceDto> GetAveragePriceAsync(GetAveragePriceQuery query, CancellationToken cancellationToken)
+        {
+            string? httpClientName = configuration["BinanceHttpClientName"];
+            using HttpClient client = httpClientFactory.CreateClient(httpClientName ?? "");
+
+            AveragePriceDto? averagePrice = await client.GetFromJsonAsync<AveragePriceDto>($"/api/v3/avgPrice?symbol={query.Symbol}", new JsonSerializerOptions(JsonSerializerDefaults.Web), cancellationToken: cancellationToken);
+
+            return averagePrice ?? new AveragePriceDto();
+        }
+
+        public async Task<List<KlineDto>> GetKlinesAsync(GetKlinesQuery query, CancellationToken cancellationToken)
         {
             string? httpClientName = configuration["BinanceHttpClientName"];
             using HttpClient client = httpClientFactory.CreateClient(httpClientName ?? "");
 
             List<dynamic>? jsonArray = await client.GetFromJsonAsync<List<dynamic>>($"/api/v3/klines?symbol={query.Symbol}&interval={query.Interval}&limit={query.Limit}", new JsonSerializerOptions(JsonSerializerDefaults.Web), cancellationToken: cancellationToken);
 
-            var klines = new List<GetKlineDto>();
+            var klines = new List<KlineDto>();
 
             foreach (var item in jsonArray!)
             {
@@ -37,7 +47,7 @@ namespace Infrastructure.Services
                 }
 
                 // Add parsed data to the GetKlineDto object
-                klines.Add(new GetKlineDto
+                klines.Add(new KlineDto
                 {
                     OpenTime = openTime,
                     OpenPrice = openPrice

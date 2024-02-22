@@ -6,7 +6,7 @@ namespace Application.Binance.Queries
     using Application.Binance.Interfaces;
     using MediatR;
 
-    public record GetKlinesQuery : IRequest<List<GetKlineDto>>
+    public record GetKlinesQuery : IRequest<List<KlineDto>>
     {
         [Required]
         public string Symbol { get; set; } = null!;
@@ -17,11 +17,11 @@ namespace Application.Binance.Queries
         public int Limit { get; set; } = 20;
     }
 
-    public class GetKlinesQueryHandler(IBinanceService binanceService) : IRequestHandler<GetKlinesQuery, List<GetKlineDto>>
+    public class GetKlinesQueryHandler(IBinanceService binanceService) : IRequestHandler<GetKlinesQuery, List<KlineDto>>
     {
         private readonly IBinanceService binanceService = binanceService;
 
-        public async Task<List<GetKlineDto>> Handle(GetKlinesQuery request, CancellationToken cancellationToken)
+        public async Task<List<KlineDto>> Handle(GetKlinesQuery request, CancellationToken cancellationToken)
         {
             return await this.binanceService.GetKlinesAsync(request, cancellationToken);
         }

@@ -8,15 +8,15 @@ namespace Api.Controllers
     public class BinanceController : ApiControllerBase
     {
         [HttpGet("klines")]
-        public async Task<ActionResult<List<GetKlineDto>>> GetKlines([FromQuery] GetKlinesQuery query)
+        public async Task<ActionResult<List<KlineDto>>> GetKlines([FromQuery] GetKlinesQuery query)
         {
             return await this.Mediator.Send(query);
         }
 
         [HttpGet("average-price")]
-        public void GetAveragePrice()
+        public async Task<ActionResult<AveragePriceDto>> GetKlines([FromQuery] GetAveragePriceQuery query)
         {
-
+            return await this.Mediator.Send(query);
         }
     }
 }
