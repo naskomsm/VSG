@@ -14,7 +14,7 @@ const routes: Routes = [
   },
   {
     path: 'views',
-    loadChildren: () => import('./views/views-routing.module').then((m) => m.ViewsRoutingModule)
+    loadChildren: () => import('./views/views.module').then((m) => m.ViewsModule)
   },
 ];
 
