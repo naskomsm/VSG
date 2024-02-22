@@ -1,13 +1,22 @@
 namespace Api
 {
+    using Api.Filters;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.OpenApi.Models;
 
     public static class ConfigureServices
     {
         public static IServiceCollection AddApiServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IAuthorizationHandler, AccessAuthorizationHandler>();
+            services.AddAuthorizationBuilder()
+                .AddPolicy("Access", policy =>
+                    policy.Requirements.Add(new Access()));
+
             services.AddHealthChecks();
             services.AddControllers();
+
 
             RegisterSwagger(services);
 

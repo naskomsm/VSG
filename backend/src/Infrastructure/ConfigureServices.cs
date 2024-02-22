@@ -2,8 +2,12 @@ namespace Infrastrucure
 {
     using Application.Binance.Interfaces;
     using Application.Common.Inferfaces;
+    using Application.Common.Interfaces;
+    using Application.User.Interfaces;
+    using Domain.Entities;
     using Infrastructure.Interceptors;
     using Infrastructure.Persistence;
+    using Infrastructure.Repositories;
     using Infrastructure.Services;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
@@ -37,9 +41,11 @@ namespace Infrastrucure
                 });
 
             // Register repositories below..
+            services.AddTransient<IUserRepository, UserRepository>();
 
             // Register services below..
             services.AddTransient<IBinanceService, BinanceService>();
+            services.AddTransient<IUserService, UserService>();
 
             return services;
         }

@@ -31,6 +31,17 @@ namespace Infrastructure.Persistence
         private async Task SeedAsync(CancellationToken cancellationToken)
         {
             var existingSymbols = this.context.Symbols.Count();
+            var existingUsers = this.context.Users.Count();
+
+            if (existingUsers == 0)
+            {
+                var users = new List<User> {
+                    new("User1"),
+                    new("User2")
+                };
+
+                this.context.Users.AddRange(users);
+            }
 
             if (existingSymbols == 0)
             {
@@ -42,8 +53,9 @@ namespace Infrastructure.Persistence
                 };
 
                 this.context.Symbols.AddRange(symbols);
-                await this.context.SaveChangesAsync(cancellationToken);
             }
+
+            await this.context.SaveChangesAsync(cancellationToken);
         }
     }
 }

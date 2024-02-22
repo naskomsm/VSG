@@ -3,8 +3,10 @@ namespace Api.Controllers
     using Api.Controllers.Base;
     using Application.Binance;
     using Application.Binance.Queries;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
+    [Authorize(Policy = "Access")]
     public class BinanceController : ApiControllerBase
     {
         [HttpGet("klines")]
