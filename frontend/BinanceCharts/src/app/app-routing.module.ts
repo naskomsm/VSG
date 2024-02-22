@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthenticationGuard } from './guards/authentication.guard';
+import { NotFoundComponent } from './shared/not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -14,8 +15,13 @@ const routes: Routes = [
   },
   {
     path: 'views',
-    loadChildren: () => import('./views/views.module').then((m) => m.ViewsModule)
+    loadChildren: () => import('./views/views.module').then((m) => m.ViewsModule),
+    canActivate: [AuthenticationGuard]
   },
+  {
+    path: '**',
+    component: NotFoundComponent
+  }
 ];
 
 @NgModule({
