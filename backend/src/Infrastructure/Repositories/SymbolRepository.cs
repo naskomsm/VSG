@@ -4,11 +4,11 @@ namespace Infrastructure.Repositories
     using System.Threading;
     using System.Threading.Tasks;
     using Application.Common.Inferfaces;
-    using Application.Common.Interfaces;
+    using Application.Symbol;
     using Domain.Entities;
     using Microsoft.EntityFrameworkCore;
 
-    public class SymbolRepository(IApplicationDbContext context) : IRepository<Symbol>
+    public class SymbolRepository(IApplicationDbContext context) : ISymbolRepository
     {
         private readonly IApplicationDbContext context = context;
 
@@ -40,6 +40,11 @@ namespace Infrastructure.Repositories
         public async Task<Symbol?> GetAsync(int id, CancellationToken cancellationToken = default)
         {
             return await this.context.Symbols.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        }
+
+        public async Task<Symbol?> GetSymbolAsync(string symbol, CancellationToken cancellationToken)
+        {
+            return await this.context.Symbols.FirstOrDefaultAsync(x => x.Name == symbol, cancellationToken);
         }
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

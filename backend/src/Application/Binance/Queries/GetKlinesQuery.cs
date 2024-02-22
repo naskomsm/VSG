@@ -9,7 +9,7 @@ namespace Application.Binance.Queries
     public record GetKlinesQuery : IRequest<List<KlineDto>>
     {
         [Required]
-        public int SymbolId { get; set; }
+        public string Symbol { get; set; } = null!;
 
         [Required]
         public string Interval { get; set; } = null!;

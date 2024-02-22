@@ -4,17 +4,18 @@ namespace Infrastructure.Services
     using System.Threading.Tasks;
     using Application.Common.Exceptions;
     using Application.Common.Interfaces;
+    using Application.Symbol;
     using Application.User.Interfaces;
     using Application.View;
     using Application.View.Interfaces;
     using Application.View.Queries;
     using Domain.Entities;
 
-    public class ViewService(IRepository<View> viewRepository, IUserRepository userRepository, IRepository<Symbol> symbolRepository) : IViewService
+    public class ViewService(IRepository<View> viewRepository, IUserRepository userRepository, ISymbolRepository symbolRepository) : IViewService
     {
         private readonly IRepository<View> viewRepository = viewRepository;
         private readonly IUserRepository userRepository = userRepository;
-        private readonly IRepository<Symbol> symbolRepository = symbolRepository;
+        private readonly ISymbolRepository symbolRepository = symbolRepository;
 
         public async Task<ViewDto> AddViewAsync(CreateViewCommand command, CancellationToken cancellationToken)
         {
@@ -47,7 +48,6 @@ namespace Infrastructure.Services
             {
                 Id = x.Id,
                 Symbol = x.Symbol!.Name,
-                SymbolId = x.Symbol!.Id,
                 Interval = x.Interval
             }).ToList();
         }

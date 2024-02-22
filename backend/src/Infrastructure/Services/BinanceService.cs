@@ -8,20 +8,19 @@ namespace Infrastructure.Services
     using Application.Binance.Interfaces;
     using Application.Binance.Queries;
     using Application.Common.Exceptions;
-    using Application.Common.Interfaces;
     using Application.Symbol;
     using Domain.Entities;
     using Microsoft.Extensions.Configuration;
 
-    public class BinanceService(IHttpClientFactory httpClientFactory, IConfiguration configuration, IRepository<Symbol> symbolRepository) : IBinanceService
+    public class BinanceService(IHttpClientFactory httpClientFactory, IConfiguration configuration, ISymbolRepository symbolRepository) : IBinanceService
     {
         private readonly IHttpClientFactory httpClientFactory = httpClientFactory;
         private readonly IConfiguration configuration = configuration;
-        private readonly IRepository<Symbol> symbolRepository = symbolRepository;
+        private readonly ISymbolRepository symbolRepository = symbolRepository;
 
         public async Task<AveragePriceDto> GetAveragePriceAsync(GetAveragePriceQuery query, CancellationToken cancellationToken)
         {
-            var symbol = await this.symbolRepository.GetAsync(query.SymbolId, cancellationToken) ?? throw new NotFoundException(typeof(Symbol));
+            var symbol = await this.symbolRepository.GetSymbolAsync(query.Symbol, cancellationToken) ?? throw new NotFoundException(typeof(Symbol));
 
             string? httpClientName = configuration["BinanceHttpClientName"];
             using HttpClient client = httpClientFactory.CreateClient(httpClientName ?? "");
@@ -33,7 +32,7 @@ namespace Infrastructure.Services
 
         public async Task<List<KlineDto>> GetKlinesAsync(GetKlinesQuery query, CancellationToken cancellationToken)
         {
-            var symbol = await this.symbolRepository.GetAsync(query.SymbolId, cancellationToken) ?? throw new NotFoundException(typeof(Symbol));
+            var symbol = await this.symbolRepository.GetSymbolAsync(query.Symbol, cancellationToken) ?? throw new NotFoundException(typeof(Symbol));
 
             string? httpClientName = configuration["BinanceHttpClientName"];
             using HttpClient client = httpClientFactory.CreateClient(httpClientName ?? "");

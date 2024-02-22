@@ -10,15 +10,15 @@ import { IAveragePrice } from "../models/averagePrice";
 export class BinanceService {
     constructor(private httpClient: HttpClient) { }
 
-    getAveragePrice(symbolId: number) {
+    getAveragePrice(symbol: string) {
         return this.httpClient.get<IAveragePrice>(
-            `${environment.api}/api/Binance/average-price?symbolId=${symbolId}`
+            `${environment.api}/api/Binance/average-price?symbol=${symbol}`
         )
     }
 
-    getKlines(symbolId: number, interval: string) {
+    getKlines(symbol: string, interval: string) {
         return this.httpClient.get<IKline[]>(
-            `${environment.api}/api/Binance/klines?symbolId=${symbolId}&Interval=${interval}`
+            `${environment.api}/api/Binance/klines?symbol=${symbol}&Interval=${interval}`
         )
     }
 }

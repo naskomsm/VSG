@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { auditTime, combineLatest, defaultIfEmpty, exhaustAll, exhaustMap, filter, first, forkJoin, map, of, switchMap, take, takeLast, zip } from 'rxjs';
+import { auditTime, map, take, zip } from 'rxjs';
 import { IAppState } from 'src/app/store';
 import { GetAveragePrice, GetKlines, GetSymbols } from 'src/app/store/actions';
 import { getUser } from 'src/app/store/selectors';
@@ -35,53 +35,50 @@ export class HomeComponent implements OnInit {
     { label: '4h', value: '4h' }
   ];
 
-  constructor(private _store: Store<IAppState>, private route: ActivatedRoute) {
+  constructor(private _store: Store<IAppState>, private route: ActivatedRoute, private router: Router) {
     this._store.dispatch(new GetSymbols());
-    this.route.queryParams.subscribe(params => {
-      const symbolId = params['symbolId'];
-      const interval = params['interval'];
 
-      // Get data
+    this.route.queryParams.subscribe(params => {
+      const symbolParam = params['symbol'];
+      const intervalParam = params['interval'];
+
+      // Get all symbols and then get data
       this.symbols.pipe(
-        auditTime(100)
-      ).subscribe(paginatedResult => {
-        if (paginatedResult) {
-          this.symbolOptions = paginatedResult.items.map(x => {
-            return { label: x.name, value: x.id }
+        take(1)
+      ).subscribe(symbols => {
+        if (symbols) {
+          this.symbolOptions = symbols.items.map(x => {
+            return { label: x.name, value: x.name }
           });
 
-          // Set default value of symbol form if none provided
-          if (!symbolId) {
-            const defaultSelectedSymbolId = paginatedResult.items[0].id;
-            this.symbolFormGroup = new FormGroup({
-              symbol: new FormControl(defaultSelectedSymbolId)
-            });
-          } else {
-            console.log(symbolId);
+          let symbol = symbols.items[0].name!;
+          let interval = this.intervalOptions[0].label;
 
-            this.symbolFormGroup = new FormGroup({
-              symbol: new FormControl(symbolId)
-            });
-            this.intervalFormGroup = new FormGroup({
-              interval: new FormControl(interval)
-            });
+          if (symbolParam) {
+            symbol = symbolParam;
           }
 
-          this._store.dispatch(new GetAveragePrice(this.symbolFormGroup.value['symbol']));
-          this._store.dispatch(new GetKlines(this.symbolFormGroup.value['symbol'], this.intervalFormGroup.value['interval']));
+          if (intervalParam) {
+            interval = intervalParam
+          }
+
+          this.symbolFormGroup = new FormGroup({ symbol: new FormControl(symbol) });
+          this.intervalFormGroup = new FormGroup({ interval: new FormControl(interval) });
+
+          this._store.dispatch(new GetAveragePrice(symbol));
+          this._store.dispatch(new GetKlines(symbol, interval));
         }
-      })
+      });
     });
+
   }
 
   changeSymbol(value: number) {
-    this._store.dispatch(new GetAveragePrice(value));
-    this._store.dispatch(new GetKlines(value, this.intervalFormGroup.value['interval']));
+    this.router.navigate(['/'], { queryParams: { symbol: value, interval: this.intervalFormGroup.value['interval'] } });
   }
 
   changeInterval(value: string) {
-    this._store.dispatch(new GetAveragePrice(this.symbolFormGroup.value['symbol']));
-    this._store.dispatch(new GetKlines(this.symbolFormGroup.value['symbol'], value));
+    this.router.navigate(['/'], { queryParams: { symbol: this.symbolFormGroup.value['symbol'], interval: value } });
   }
 
   viewAll() { }
@@ -91,36 +88,6 @@ export class HomeComponent implements OnInit {
     const textColor = documentStyle.getPropertyValue('--text-color');
     const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
-
-    this.options = {
-      maintainAspectRatio: false,
-      aspectRatio: 0.6,
-      plugins: {
-        legend: {
-          labels: {
-            color: textColor
-          }
-        }
-      },
-      scales: {
-        x: {
-          ticks: {
-            color: textColorSecondary
-          },
-          grid: {
-            color: surfaceBorder
-          }
-        },
-        y: {
-          ticks: {
-            color: textColorSecondary
-          },
-          grid: {
-            color: surfaceBorder
-          }
-        }
-      }
-    }
 
     zip(this.klins, this.avgPrice)
       .pipe(
@@ -151,5 +118,35 @@ export class HomeComponent implements OnInit {
         })
       )
       .subscribe();
+
+    this.options = {
+      maintainAspectRatio: false,
+      aspectRatio: 0.6,
+      plugins: {
+        legend: {
+          labels: {
+            color: textColor
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: textColorSecondary
+          },
+          grid: {
+            color: surfaceBorder
+          }
+        },
+        y: {
+          ticks: {
+            color: textColorSecondary
+          },
+          grid: {
+            color: surfaceBorder
+          }
+        }
+      }
+    }
   }
 }

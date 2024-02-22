@@ -3,6 +3,7 @@ namespace Infrastrucure
     using Application.Binance.Interfaces;
     using Application.Common.Inferfaces;
     using Application.Common.Interfaces;
+    using Application.Symbol;
     using Application.User.Interfaces;
     using Application.View.Interfaces;
     using Domain.Entities;
@@ -42,7 +43,8 @@ namespace Infrastrucure
                 });
 
             // Register repositories below..
-            services.AddTransient<IRepository<Symbol>, SymbolRepository>();
+            services.AddTransient<ISymbolRepository, SymbolRepository>();
+
             services.AddTransient<IRepository<View>, ViewRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
 

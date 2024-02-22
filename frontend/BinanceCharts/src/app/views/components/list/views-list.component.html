@@ -17,8 +17,8 @@
                 <td>{{ view.symbol }}</td>
                 <td>{{ view.interval }}</td>
                 <td>
-                    <p-button [routerLink]="['/']"
-                        [queryParams]="{'symbolId': view.symbolId, 'interval': view.interval}" label="View"></p-button>
+                    <p-button [routerLink]="['/']" [queryParams]="{'symbol': view.symbol, 'interval': view.interval}"
+                        label="View"></p-button>
                     <p-button label="Delete" severity="danger"></p-button>
                 </td>
             </tr>

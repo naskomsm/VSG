@@ -15,7 +15,7 @@ export class BinanceEffects {
         return this._actions.pipe(
             ofType<GetAveragePrice>(EBinanceActions.GetAveragePrice),
             switchMap((action) => {
-                return this.binanceService.getAveragePrice(action.symbolId).pipe(
+                return this.binanceService.getAveragePrice(action.symbol).pipe(
                     map((response) => {
                         return new GetAveragePriceSuccess(response);
                     }),
@@ -32,7 +32,7 @@ export class BinanceEffects {
         return this._actions.pipe(
             ofType<GetKlines>(EBinanceActions.GetKlines),
             switchMap((action) => {
-                return this.binanceService.getKlines(action.symbolId, action.interval).pipe(
+                return this.binanceService.getKlines(action.symbol, action.interval).pipe(
                     map((response) => {
                         return new GetKlinesSuccess(response);
                     }),

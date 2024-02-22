@@ -13,7 +13,7 @@ export enum EBinanceActions {
 
 export class GetAveragePrice implements Action {
     public readonly type = EBinanceActions.GetAveragePrice;
-    constructor(public symbolId: number) { }
+    constructor(public symbol: string) { }
 }
 
 export class GetAveragePriceSuccess implements Action {
@@ -28,7 +28,7 @@ export class GetAveragePriceFailure implements Action {
 
 export class GetKlines implements Action {
     public readonly type = EBinanceActions.GetKlines;
-    constructor(public symbolId: number, public interval: string) { }
+    constructor(public symbol: string, public interval: string) { }
 }
 
 export class GetKlinesSuccess implements Action {
