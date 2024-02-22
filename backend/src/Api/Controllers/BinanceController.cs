@@ -6,8 +6,6 @@ namespace Api.Controllers
     using Application.Binance.Symbol;
     using Application.Common.Models;
     using Application.Symbol;
-    using Application.View;
-    using Application.View.Queries;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 

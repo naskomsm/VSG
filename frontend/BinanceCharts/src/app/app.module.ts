@@ -14,6 +14,8 @@ import { NotFoundComponent } from './shared/not-found/not-found.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { SymbolEffects } from './store/effects/symbol.effects';
+import { httpInterceptorProviders } from './interceptors';
 
 @NgModule({
   declarations: [
@@ -27,13 +29,13 @@ import { MessageService } from 'primeng/api';
     HttpClientModule,
     BrowserAnimationsModule,
     StoreModule.forRoot(appReducers, { metaReducers }),
-    EffectsModule.forRoot([HydrationEffects, AuthenticationEffects]),
+    EffectsModule.forRoot([HydrationEffects, AuthenticationEffects, SymbolEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production, // Restrict extension to log-only mode
     }),
   ],
-  providers: [MessageService],
+  providers: [MessageService, httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { IAppState } from 'src/app/store';
+import { GetSymbols } from 'src/app/store/actions';
 
 @Component({
   selector: 'app-home',
@@ -48,6 +51,10 @@ export class HomeComponent implements OnInit {
   ];
 
   hardcoded_current_price = 51303.79853094;
+
+  constructor(private _store: Store<IAppState>) {
+    this._store.dispatch(new GetSymbols());
+  }
 
   viewAll() { }
 

@@ -7,3 +7,8 @@ export const isAuthenticated = createSelector(
     authenticationState,
     (state: IAuthenticationState) => state.isAuthenticated
 );
+
+export const getUser = createSelector(
+    authenticationState,
+    (state: IAuthenticationState) => state.user
+);
