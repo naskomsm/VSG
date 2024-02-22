@@ -9,11 +9,11 @@ export const authenticationReducers = (
         case EAuthenticationActions.Signin:
         case EAuthenticationActions.Signup:
             return state;
-        case EAuthenticationActions.SignupSuccess:
         case EAuthenticationActions.SigninSuccess:
             return {
                 ...state,
-                isAuthenticated: true
+                isAuthenticated: true,
+                user: action.user
             }
         case EAuthenticationActions.SigninFailure:
         case EAuthenticationActions.SignupFailure:

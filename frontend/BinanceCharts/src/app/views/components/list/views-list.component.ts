@@ -18,5 +18,4 @@ export class ViewsListComponent {
         { id: 8, symbol: "XRPUSDT", period: "1h" },
         { id: 9, symbol: "XRPUSDT", period: "1h" },
     ];
-
 }

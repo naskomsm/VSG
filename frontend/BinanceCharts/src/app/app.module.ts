@@ -11,6 +11,9 @@ import { appReducers, metaReducers } from './store/reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { environment } from 'src/environments/environment';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
+import { HttpClientModule } from '@angular/common/http';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -18,8 +21,10 @@ import { NotFoundComponent } from './shared/not-found/not-found.component';
     NotFoundComponent
   ],
   imports: [
+    ToastModule,
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     StoreModule.forRoot(appReducers, { metaReducers }),
     EffectsModule.forRoot([HydrationEffects, AuthenticationEffects]),
@@ -28,7 +33,7 @@ import { NotFoundComponent } from './shared/not-found/not-found.component';
       logOnly: environment.production, // Restrict extension to log-only mode
     }),
   ],
-  providers: [],
+  providers: [MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

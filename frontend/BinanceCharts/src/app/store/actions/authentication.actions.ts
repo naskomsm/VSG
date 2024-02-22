@@ -1,4 +1,5 @@
 import { Action } from "@ngrx/store";
+import { IUser } from "src/app/models/user";
 
 export enum EAuthenticationActions {
     Signin = '[Signin] Sign in attempt',
@@ -12,12 +13,12 @@ export enum EAuthenticationActions {
 
 export class Signin implements Action {
     public readonly type = EAuthenticationActions.Signin;
-    constructor() { }
+    constructor(public username: string) { }
 }
 
 export class SigninSuccess implements Action {
     public readonly type = EAuthenticationActions.SigninSuccess;
-    constructor() { }
+    constructor(public user: IUser) { }
 }
 
 export class SigninFailure implements Action {

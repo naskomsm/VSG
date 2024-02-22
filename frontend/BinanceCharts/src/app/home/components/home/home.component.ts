@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit {
 
   hardcoded_current_price = 51303.79853094;
 
-  constructor() { }
+  viewAll() { }
 
   ngOnInit() {
     this.symbolFormGroup = new FormGroup({

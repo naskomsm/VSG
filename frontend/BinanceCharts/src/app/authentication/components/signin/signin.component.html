@@ -1,11 +1,15 @@
-<p-card header="Sign in" [style]="{ width: '25rem', margin: 'auto', 'text-align': 'center', 'color': '#3B82F6' }">
-    <p-inputGroup>
-        <p-inputGroupAddon>
-            <i class="pi pi-user"></i>
-        </p-inputGroupAddon>
-        <input pInputText placeholder="Username"
-            [style]="{width: '100%', 'padding-left': '1rem', 'border-width': '0.1px'}" />
-    </p-inputGroup>
+<form [formGroup]="signinForm">
+    <p-card header="Sign in" [style]="{ width: '25rem', margin: 'auto', 'text-align': 'center', 'color': '#3B82F6' }">
+        <p-inputGroup>
+            <p-inputGroupAddon>
+                <i class="pi pi-user"></i>
+            </p-inputGroupAddon>
+            <input formControlName="username" pInputText placeholder="Username" id="username"
+                [style]="{width: '100%', 'padding-left': '1rem', 'border-width': '0.1px'}" />
+        </p-inputGroup>
 
-    <p-button label="Sign In" [style]="{'margin-top': '2rem'}"></p-button>
-</p-card>
+        <p-button [disabled]="!this.signinForm.valid" label="Sign In" [style]="{'margin-top': '2rem'}"
+            (click)="signin()"></p-button>
+    </p-card>
+
+</form>
