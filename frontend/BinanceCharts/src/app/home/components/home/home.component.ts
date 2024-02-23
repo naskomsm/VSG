@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { map, take, zip } from 'rxjs';
+import { map, zip } from 'rxjs';
 import { ISaveView } from 'src/app/models/view';
 import { IAppState } from 'src/app/store';
 import { GetAveragePrice, GetKlines, GetSymbols } from 'src/app/store/actions';
@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
   data: any;
   options: any;
 
-  isLoading: boolean = true;
+  skeletonActive: boolean = true;
   symbolFormGroup: FormGroup = new FormGroup({ symbol: new FormControl() });
   intervalFormGroup: FormGroup = new FormGroup({ interval: new FormControl('15m') });
 
@@ -39,9 +39,12 @@ export class HomeComponent implements OnInit {
     { label: '4h', value: '4h' }
   ];
 
-  constructor(private _store: Store<IAppState>, private route: ActivatedRoute, private router: Router) {
+  constructor(
+    private _store: Store<IAppState>,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
     this._store.dispatch(new GetSymbols());
-
     this.user.subscribe(user => {
       if (user) {
         this.userId = user.id;
@@ -52,9 +55,7 @@ export class HomeComponent implements OnInit {
       const symbolParam = params['symbol'];
       const intervalParam = params['interval'];
 
-      // Get all symbols and then get data
       this.symbols.pipe(
-        take(1)
       ).subscribe(symbols => {
         if (symbols) {
           this.symbolOptions = symbols.items.map(x => {
@@ -98,7 +99,6 @@ export class HomeComponent implements OnInit {
       interval: this.intervalFormGroup.value['interval']
     };
 
-
     this._store.dispatch(new SaveView(saveView));
   }
 
@@ -134,6 +134,8 @@ export class HomeComponent implements OnInit {
               }
             ]
           };
+
+          this.skeletonActive = false;
         })
       )
       .subscribe();

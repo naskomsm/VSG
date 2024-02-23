@@ -8,7 +8,7 @@ export const binanceReducers = (
     switch (action.type) {
         case EBinanceActions.GetKlines:
         case EBinanceActions.GetAveragePrice:
-            return state;
+            return initialBinanceState;
         case EBinanceActions.GetKlinesSuccess:
             return {
                 ...state,

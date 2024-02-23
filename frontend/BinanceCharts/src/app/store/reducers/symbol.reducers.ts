@@ -7,7 +7,7 @@ export const symbolReducers = (
 ): ISymbolsState => {
     switch (action.type) {
         case ESymbolsActions.GetSymbols:
-            return state;
+            return initialSymbolsState;
         case ESymbolsActions.GetSymbolsSuccess:
             return {
                 ...state,

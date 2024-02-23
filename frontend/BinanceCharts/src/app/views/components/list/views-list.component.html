@@ -1,4 +1,6 @@
-<div class="card" [style]="{'margin': '2rem'}">
+<div class="card">
+    <p-button label="Back" [routerLink]="['/']" [style]="{'margin-bottom': '2rem'}"></p-button>
+
     <p-table [value]="(this.views$ | async)?.items!" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
         [tableStyle]="{ 'min-width': '50rem' }"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
