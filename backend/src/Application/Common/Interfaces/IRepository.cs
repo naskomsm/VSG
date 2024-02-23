@@ -2,10 +2,9 @@ namespace Application.Common.Interfaces
 {
     using Domain.Entities.Base;
 
-    public interface IRepository<TEntity>
-        where TEntity : BaseEntity
+    public interface IRepository<TEntity> where TEntity : BaseEntity
     {
-        Task<IList<TEntity>> FetchAllAsync(CancellationToken cancellationToken = default);
+        IQueryable<TEntity> FetchAll(CancellationToken cancellationToken = default);
 
         Task AddAsync(TEntity entity, CancellationToken cancellationToken = default);
 

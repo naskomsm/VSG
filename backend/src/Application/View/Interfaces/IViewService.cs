@@ -6,7 +6,7 @@ namespace Application.View.Interfaces
 
     public interface IViewService
     {
-        Task<List<ViewDto>> FetchAllAsync(CancellationToken cancellationToken = default);
+        Task<PaginatedList<ViewDto>> FetchAllAsync(GetViewsQuery query, CancellationToken cancellationToken = default);
 
         Task<ViewDto> AddViewAsync(CreateViewCommand command, CancellationToken cancellationToken);
 

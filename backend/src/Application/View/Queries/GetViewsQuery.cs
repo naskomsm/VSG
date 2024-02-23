@@ -1,14 +1,17 @@
 namespace Application.View.Queries
 {
+    using System.ComponentModel.DataAnnotations;
     using System.Threading;
     using System.Threading.Tasks;
-    using Application.Common.Extensions;
     using Application.Common.Models;
     using Application.View.Interfaces;
     using MediatR;
 
     public record GetViewsQuery : IRequest<PaginatedList<ViewDto>>
     {
+        [Required]
+        public int UserId { get; set; }
+
         public int PageNumber { get; init; } = 1;
 
         public int PageSize { get; init; } = 20;
@@ -20,9 +23,7 @@ namespace Application.View.Queries
 
         public async Task<PaginatedList<ViewDto>> Handle(GetViewsQuery request, CancellationToken cancellationToken)
         {
-            var views = await this.viewService.FetchAllAsync(cancellationToken);
-            var paginatedList = views.AsQueryable().ToPaginatedList(request.PageNumber, request.PageSize);
-            return paginatedList;
+            return await this.viewService.FetchAllAsync(request, cancellationToken);
         }
     }
 }

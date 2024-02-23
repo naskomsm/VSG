@@ -7,7 +7,10 @@ namespace Infrastructure.Services
     using Application.Binance;
     using Application.Binance.Interfaces;
     using Application.Binance.Queries;
+    using Application.Binance.Symbol;
     using Application.Common.Exceptions;
+    using Application.Common.Extensions;
+    using Application.Common.Models;
     using Application.Symbol;
     using Domain.Entities;
     using Microsoft.Extensions.Configuration;
@@ -65,14 +68,18 @@ namespace Infrastructure.Services
             return klines;
         }
 
-        public async Task<List<SymbolDto>> GetSymbolsAsync(CancellationToken cancellationToken)
+        public async Task<PaginatedList<SymbolDto>> GetSymbolsAsync(GetSymbolsQuery query, CancellationToken cancellationToken)
         {
-            var symbols = await this.symbolRepository.FetchAllAsync(cancellationToken);
-            return symbols.Select(x => new SymbolDto
-            {
-                Id = x.Id,
-                Name = x.Name
-            }).ToList();
+            var symbols = await this.symbolRepository
+                .FetchAll(cancellationToken)
+                .Select(x => new SymbolDto
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                })
+                .PaginatedListAsync(query.PageNumber, query.PageSize);
+
+            return symbols;
         }
     }
 }

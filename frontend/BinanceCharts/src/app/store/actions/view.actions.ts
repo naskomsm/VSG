@@ -17,7 +17,7 @@ export enum EViewsActions {
 
 export class GetViews implements Action {
     public readonly type = EViewsActions.GetViews;
-    constructor(public page: number = 1, public perPage: number = 10) { }
+    constructor(public userId: number, public page: number = 1, public perPage: number = 50) { }
 }
 
 export class GetViewsSuccess implements Action {
@@ -32,7 +32,7 @@ export class GetViewsFailure implements Action {
 
 export class DeleteView implements Action {
     public readonly type = EViewsActions.DeleteView;
-    constructor(public id: number) { }
+    constructor(public id: number, public userId: number) { }
 }
 
 export class DeleteViewSuccess implements Action {

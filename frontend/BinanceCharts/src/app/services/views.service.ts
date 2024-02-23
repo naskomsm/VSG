@@ -11,9 +11,9 @@ import { IMessage } from "../models/message";
 export class ViewsService {
     constructor(private httpClient: HttpClient) { }
 
-    getViews() {
+    getViews(userId: number) {
         return this.httpClient.get<Paginated<IView>>(
-            `${environment.api}/api/views`
+            `${environment.api}/api/views?userId=${userId}`
         )
     }
 

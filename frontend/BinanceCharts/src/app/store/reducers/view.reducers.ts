@@ -7,6 +7,7 @@ export const viewReducers = (
 ): IViewsState => {
     switch (action.type) {
         case EViewsActions.GetViews:
+        case EViewsActions.GetViewsFailure:
             return initialViewsState;
         case EViewsActions.GetViewsSuccess:
             return {
@@ -17,8 +18,6 @@ export const viewReducers = (
             return {
                 ...state
             }
-        case EViewsActions.GetViewsFailure:
-            return initialViewsState;
         default:
             return {
                 ...state

@@ -5,13 +5,15 @@ import { DeleteView, DeleteViewFailure, DeleteViewSuccess, EViewsActions, GetVie
 import { ViewsService } from 'src/app/services/views.service';
 import { IAppState } from '../state';
 import { Store } from '@ngrx/store';
+import { MessageService } from 'primeng/api';
 
 @Injectable()
 export class ViewEffects {
     constructor(
         private _actions: Actions,
         private viewsService: ViewsService,
-        private _store: Store<IAppState>
+        private _store: Store<IAppState>,
+        private messageService: MessageService
     ) { }
 
     saveView$ = createEffect(() => {
@@ -20,6 +22,7 @@ export class ViewEffects {
             switchMap((action) => {
                 return this.viewsService.saveView(action.view).pipe(
                     map((response) => {
+                        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Successfully saved View!' });
                         return new SaveViewSuccess(response);
                     }),
                     catchError((error) => {
@@ -34,8 +37,8 @@ export class ViewEffects {
     getViews$ = createEffect(() => {
         return this._actions.pipe(
             ofType<GetViews>(EViewsActions.GetViews),
-            switchMap((_) => {
-                return this.viewsService.getViews().pipe(
+            switchMap((action) => {
+                return this.viewsService.getViews(action.userId).pipe(
                     map((response) => {
                         return new GetViewsSuccess(response);
                     }),
@@ -54,7 +57,7 @@ export class ViewEffects {
             switchMap((action) => {
                 return this.viewsService.deleteView(action.id).pipe(
                     map((response) => {
-                        this._store.dispatch(new GetViews());
+                        this._store.dispatch(new GetViews(action.userId));
                         return new DeleteViewSuccess(response);
                     }),
                     catchError((error) => {

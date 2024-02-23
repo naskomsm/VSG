@@ -5,7 +5,6 @@ namespace Application.Binance.Symbol
     using Application.Binance.Interfaces;
     using Application.Common.Models;
     using MediatR;
-    using Application.Common.Extensions;
     using Application.Symbol;
 
     public record GetSymbolsQuery : IRequest<PaginatedList<SymbolDto>>
@@ -21,9 +20,7 @@ namespace Application.Binance.Symbol
 
         public async Task<PaginatedList<SymbolDto>> Handle(GetSymbolsQuery request, CancellationToken cancellationToken)
         {
-            var symbols = await this.binanceService.GetSymbolsAsync(cancellationToken);
-            var paginatedList = symbols.AsQueryable().ToPaginatedList(request.PageNumber, request.PageSize);
-            return paginatedList;
+            return await this.binanceService.GetSymbolsAsync(request, cancellationToken);
         }
     }
 }

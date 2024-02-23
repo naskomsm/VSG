@@ -32,9 +32,9 @@ namespace Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<IList<Symbol>> FetchAllAsync(CancellationToken cancellationToken = default)
+        public IQueryable<Symbol> FetchAll(CancellationToken cancellationToken = default)
         {
-            return await this.context.Symbols.ToListAsync(cancellationToken);
+            return this.context.Symbols.AsQueryable();
         }
 
         public async Task<Symbol?> GetAsync(int id, CancellationToken cancellationToken = default)

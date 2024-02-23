@@ -45,7 +45,7 @@ namespace Infrastrucure
             // Register repositories below..
             services.AddTransient<ISymbolRepository, SymbolRepository>();
 
-            services.AddTransient<IRepository<View>, ViewRepository>();
+            services.AddTransient<IViewRepository, ViewRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
 
             // Register services below..

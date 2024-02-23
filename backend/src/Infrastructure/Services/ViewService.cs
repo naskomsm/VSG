@@ -3,7 +3,7 @@ namespace Infrastructure.Services
     using System.Threading;
     using System.Threading.Tasks;
     using Application.Common.Exceptions;
-    using Application.Common.Interfaces;
+    using Application.Common.Extensions;
     using Application.Common.Models;
     using Application.Symbol;
     using Application.User.Interfaces;
@@ -13,9 +13,9 @@ namespace Infrastructure.Services
     using Application.View.Queries;
     using Domain.Entities;
 
-    public class ViewService(IRepository<View> viewRepository, IUserRepository userRepository, ISymbolRepository symbolRepository) : IViewService
+    public class ViewService(IViewRepository viewRepository, IUserRepository userRepository, ISymbolRepository symbolRepository) : IViewService
     {
-        private readonly IRepository<View> viewRepository = viewRepository;
+        private readonly IViewRepository viewRepository = viewRepository;
         private readonly IUserRepository userRepository = userRepository;
         private readonly ISymbolRepository symbolRepository = symbolRepository;
 
@@ -51,16 +51,19 @@ namespace Infrastructure.Services
             return new MessageDto { Message = "Deleted view" };
         }
 
-        public async Task<List<ViewDto>> FetchAllAsync(CancellationToken cancellationToken = default)
+        public async Task<PaginatedList<ViewDto>> FetchAllAsync(GetViewsQuery query, CancellationToken cancellationToken = default)
         {
-            var views = await this.viewRepository.FetchAllAsync(cancellationToken);
+            var views = await this.viewRepository
+                .GetViewsByUserId(query.UserId)
+                .Select(x => new ViewDto
+                {
+                    Id = x.Id,
+                    Symbol = x.Symbol!.Name,
+                    Interval = x.Interval
+                })
+                .PaginatedListAsync(query.PageNumber, query.PageSize);
 
-            return views.Select(x => new ViewDto
-            {
-                Id = x.Id,
-                Symbol = x.Symbol!.Name,
-                Interval = x.Interval
-            }).ToList();
+            return views;
         }
     }
 }

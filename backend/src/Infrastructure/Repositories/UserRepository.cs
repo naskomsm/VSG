@@ -1,6 +1,7 @@
 namespace Infrastructure.Repositories
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using Application.Common.Inferfaces;
@@ -34,11 +35,10 @@ namespace Infrastructure.Repositories
                 .AnyAsync(x => x.Id == id, cancellationToken);
         }
 
-        public async Task<IList<User>> FetchAllAsync(CancellationToken cancellationToken = default)
+        public IQueryable<User> FetchAll(CancellationToken cancellationToken = default)
         {
-            return await this.context
-                .Users
-                .ToListAsync(cancellationToken);
+            return this.context
+                .Users.AsQueryable();
         }
 
         public async Task<User?> GetAsync(int id, CancellationToken cancellationToken = default)
