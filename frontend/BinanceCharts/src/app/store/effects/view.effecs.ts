@@ -6,6 +6,7 @@ import { ViewsService } from 'src/app/services/views.service';
 import { IAppState } from '../state';
 import { Store } from '@ngrx/store';
 import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class ViewEffects {
@@ -13,7 +14,8 @@ export class ViewEffects {
         private _actions: Actions,
         private viewsService: ViewsService,
         private _store: Store<IAppState>,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private router: Router
     ) { }
 
     saveView$ = createEffect(() => {
@@ -22,6 +24,7 @@ export class ViewEffects {
             switchMap((action) => {
                 return this.viewsService.saveView(action.view).pipe(
                     map((response) => {
+                        this.router.navigate(['/', 'views']);
                         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Successfully saved View!' });
                         return new SaveViewSuccess(response);
                     }),
