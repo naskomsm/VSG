@@ -6,6 +6,7 @@ namespace Api.Controllers
     using Application.View;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Application.View.Command;
 
     [Authorize(Policy = "Access")]
     public class ViewsController : ApiControllerBase
@@ -20,6 +21,12 @@ namespace Api.Controllers
         public async Task<ActionResult<PaginatedList<ViewDto>>> GetViews([FromQuery] GetViewsQuery query)
         {
             return await this.Mediator.Send(query);
+        }
+
+        [HttpDelete("{Id}")]
+        public async Task<ActionResult<MessageDto>> Delete([FromRoute] DeleteViewCommand command)
+        {
+            return await this.Mediator.Send(command);
         }
     }
 }

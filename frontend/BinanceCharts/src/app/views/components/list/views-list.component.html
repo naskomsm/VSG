@@ -19,7 +19,7 @@
                 <td>
                     <p-button [routerLink]="['/']" [queryParams]="{'symbol': view.symbol, 'interval': view.interval}"
                         label="View"></p-button>
-                    <p-button label="Delete" severity="danger"></p-button>
+                    <p-button (onClick)="deleteView(view.id)" label="Delete" severity="danger"></p-button>
                 </td>
             </tr>
         </ng-template>

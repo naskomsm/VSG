@@ -39,9 +39,9 @@ namespace Infrastructure.Repositories
                 .ToListAsync(cancellationToken);
         }
 
-        public Task<View?> GetAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<View?> GetAsync(int id, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            return await this.context.Views.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

@@ -3,3 +3,9 @@ export interface IView {
     symbol: string;
     period: string;
 }
+
+export interface ISaveView {
+    userId: number;
+    symbol: string;
+    interval: string;
+}

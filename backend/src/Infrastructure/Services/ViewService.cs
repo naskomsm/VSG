@@ -4,9 +4,11 @@ namespace Infrastructure.Services
     using System.Threading.Tasks;
     using Application.Common.Exceptions;
     using Application.Common.Interfaces;
+    using Application.Common.Models;
     using Application.Symbol;
     using Application.User.Interfaces;
     using Application.View;
+    using Application.View.Command;
     using Application.View.Interfaces;
     using Application.View.Queries;
     using Domain.Entities;
@@ -20,7 +22,7 @@ namespace Infrastructure.Services
         public async Task<ViewDto> AddViewAsync(CreateViewCommand command, CancellationToken cancellationToken)
         {
             var user = await this.userRepository.GetAsync(command.UserId, cancellationToken) ?? throw new NotFoundException(typeof(User));
-            var symbol = await this.symbolRepository.GetAsync(command.SymbolId, cancellationToken) ?? throw new NotFoundException(typeof(Symbol));
+            var symbol = await this.symbolRepository.GetSymbolAsync(command.Symbol, cancellationToken) ?? throw new NotFoundException(typeof(Symbol));
 
             var view = new View
             {
@@ -38,6 +40,15 @@ namespace Infrastructure.Services
                 Symbol = symbol.Name,
                 Interval = view.Interval
             };
+        }
+
+        public async Task<MessageDto> DeleteAsync(DeleteViewCommand command, CancellationToken cancellationToken)
+        {
+            var entity = await this.viewRepository.GetAsync(command.Id, cancellationToken) ?? throw new NotFoundException(typeof(View));
+            this.viewRepository.Delete(entity);
+            await this.viewRepository.SaveChangesAsync(cancellationToken);
+
+            return new MessageDto { Message = "Deleted view" };
         }
 
         public async Task<List<ViewDto>> FetchAllAsync(CancellationToken cancellationToken = default)

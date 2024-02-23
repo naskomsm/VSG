@@ -12,7 +12,7 @@ namespace Application.View.Queries
         public int UserId { get; set; }
 
         [Required]
-        public int SymbolId { get; set; }
+        public string Symbol { get; set; } = null!;
 
         [Required]
         public string Interval { get; set; } = null!;

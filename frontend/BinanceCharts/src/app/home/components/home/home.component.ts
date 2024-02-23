@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { auditTime, map, take, zip } from 'rxjs';
+import { map, take, zip } from 'rxjs';
+import { ISaveView } from 'src/app/models/view';
 import { IAppState } from 'src/app/store';
 import { GetAveragePrice, GetKlines, GetSymbols } from 'src/app/store/actions';
+import { SaveView } from 'src/app/store/actions/view.actions';
 import { getUser } from 'src/app/store/selectors';
 import { getAveragePrice, getKlines } from 'src/app/store/selectors/binance.selectors';
 import { paginatedSymbols } from 'src/app/store/selectors/symbols.selectors';
@@ -27,6 +29,8 @@ export class HomeComponent implements OnInit {
   klins = this._store.select(getKlines);
   avgPrice = this._store.select(getAveragePrice);
 
+  userId!: number;
+
   symbolOptions: any[] = [];
 
   intervalOptions: any[] = [
@@ -37,6 +41,12 @@ export class HomeComponent implements OnInit {
 
   constructor(private _store: Store<IAppState>, private route: ActivatedRoute, private router: Router) {
     this._store.dispatch(new GetSymbols());
+
+    this.user.subscribe(user => {
+      if (user) {
+        this.userId = user.id;
+      }
+    });
 
     this.route.queryParams.subscribe(params => {
       const symbolParam = params['symbol'];
@@ -81,7 +91,16 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/'], { queryParams: { symbol: this.symbolFormGroup.value['symbol'], interval: value } });
   }
 
-  viewAll() { }
+  saveView() {
+    const saveView: ISaveView = {
+      userId: this.userId,
+      symbol: this.symbolFormGroup.value['symbol'],
+      interval: this.intervalFormGroup.value['interval']
+    };
+
+
+    this._store.dispatch(new SaveView(saveView));
+  }
 
   ngOnInit() {
     const documentStyle = getComputedStyle(document.documentElement);

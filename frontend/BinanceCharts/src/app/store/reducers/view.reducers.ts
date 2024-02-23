@@ -13,6 +13,10 @@ export const viewReducers = (
                 ...state,
                 views: action.views
             }
+        case EViewsActions.DeleteViewSuccess:
+            return {
+                ...state
+            }
         case EViewsActions.GetViewsFailure:
             return initialViewsState;
         default:

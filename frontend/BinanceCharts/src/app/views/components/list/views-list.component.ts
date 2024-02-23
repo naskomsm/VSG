@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { IView } from "src/app/models/view";
 import { IAppState } from "src/app/store";
-import { GetViews } from "src/app/store/actions/view.actions";
+import { DeleteView, GetViews } from "src/app/store/actions/view.actions";
 import { paginatedViews } from "src/app/store/selectors/views.selectors";
 
 @Component({
@@ -15,5 +15,9 @@ export class ViewsListComponent {
 
     constructor(private _store: Store<IAppState>) {
         this._store.dispatch(new GetViews());
+    }
+
+    deleteView(id: number) {
+        this._store.dispatch(new DeleteView(id));
     }
 }
