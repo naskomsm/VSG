@@ -6,6 +6,8 @@ Swagger is located on localhost:7186/api
 
 Angular is located on localhost:80
 
+If you want to start the applications with containers do the following:
+
 1. Generate certificates locally
 
    dotnet dev-certs https --clean
