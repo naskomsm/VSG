@@ -1,0 +1,47 @@
+version: "3.8"
+
+volumes:
+  mysql-volume:
+
+services:
+  db:
+    image: mysql:8.0
+    restart: on-failure
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    environment:
+      MYSQL_ROOT_PASSWORD: root # from env
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-volume:/var/lib/mysql
+
+  api:
+    container_name: finance-api
+    build: ./backend
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=db;Database=VSG;User=root;Password=root # from env
+      - BinanceHttpClientName=binance-api
+      - BinanceUrl=https://api.binance.com
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:7186;http://+:5236
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=very_good_password
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: on-failure
+    ports:
+      - 5236:5236
+      - 7186:7186
+    volumes:
+      - ~/.aspnet/https:/https:ro
+
+  web:
+    container_name: finance-web
+    build: ./frontend
+    restart: on-failure
+    ports:
+      - 80:80

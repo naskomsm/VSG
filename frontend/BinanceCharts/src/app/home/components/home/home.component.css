@@ -1,0 +1,8 @@
+.chart-shell {
+    text-align: center
+}
+
+.options {
+    justify-content: space-between;
+    display: flex;
+}
